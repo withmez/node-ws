@@ -1,722 +1,882 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Green Network - Protect Earth</title>
+    <title>Registry Automation API Portal | DevRegistry Enterprise</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --bg-base: #070a13;
+            --bg-surface: #0f1626;
+            --bg-code: #070b14;
+            --primary: #38bdf8;
+            --primary-dim: rgba(56, 189, 248, 0.08);
+            --accent: #10b981;
+            --accent-dim: rgba(16, 185, 129, 0.08);
+            --warning: #f59e0b;
+            --warning-dim: rgba(245, 158, 11, 0.08);
+            --danger: #ef4444;
+            --danger-dim: rgba(239, 68, 68, 0.1);
+            --border: rgba(255, 255, 255, 0.06);
+            --text-main: #f1f5f9;
+            --text-muted: #64748b;
+            --text-content: #cbd5e1;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        :root {
-            --primary: #2e7d32;
-            --secondary: #4caf50;
-            --accent: #8bc34a;
-            --light: #e8f5e9;
-            --dark: #1b5e20;
-            --text: #333333;
-            --white: #ffffff;
+            scroll-behavior: smooth;
         }
 
         body {
-            background-color: var(--light);
-            color: var(--text);
-            line-height: 1.6;
-        }
-
-        header {
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            color: var(--white);
-            padding: 1rem 0;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            line-height: 1.7;
         }
 
         .container {
-            width: 90%;
-            max-width: 1200px;
+            max-width: 1440px;
             margin: 0 auto;
+            padding: 0 40px;
         }
 
-        .nav-container {
+        /* Sticky Navigation Bar */
+        header {
+            background-color: rgba(7, 10, 19, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 18px 0;
         }
 
-        .logo {
+        .brand {
             display: flex;
             align-items: center;
-            gap: 10px;
-            font-size: 1.8rem;
-            font-weight: 700;
-        }
-
-        .logo i {
-            font-size: 2rem;
-        }
-
-        nav ul {
-            display: flex;
-            list-style: none;
-        }
-
-        nav ul li {
-            margin-left: 2rem;
-        }
-
-        nav ul li a {
-            color: var(--white);
+            gap: 12px;
             text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            padding: 0.5rem 0;
-            position: relative;
+            color: var(--text-main);
+            font-weight: 700;
+            font-size: 20px;
+            letter-spacing: -0.5px;
         }
 
-        nav ul li a:hover {
-            color: var(--accent);
+        .brand i {
+            color: var(--primary);
         }
 
-        nav ul li a::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background-color: var(--accent);
-            transition: width 0.3s ease;
-        }
-
-        nav ul li a:hover::after {
-            width: 100%;
-        }
-
-        .hero {
-            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4)), url('https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2073&q=80');
-            background-size: cover;
-            background-position: center;
-            height: 80vh;
+        .header-meta {
             display: flex;
             align-items: center;
-            text-align: center;
-            color: var(--white);
+            gap: 16px;
         }
 
-        .hero-content {
-            max-width: 800px;
-            margin: 0 auto;
+        .badge {
+            background: var(--primary-dim);
+            color: var(--primary);
+            font-size: 11px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            border: 1px solid rgba(56, 189, 248, 0.15);
+            font-family: var(--font-mono);
+        }
+
+        /* Hero Frame Architecture */
+        .hero {
+            padding: 160px 0 50px;
+            border-bottom: 1px solid var(--border);
+            background: radial-gradient(40% 40% at 100% 0%, rgba(56, 189, 248, 0.03) 0%, rgba(7, 10, 19, 0) 100%);
         }
 
         .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            font-size: 40px;
+            font-weight: 700;
+            letter-spacing: -1px;
+            margin-bottom: 16px;
         }
 
         .hero p {
-            font-size: 1.3rem;
-            margin-bottom: 2rem;
+            color: var(--text-content);
+            max-width: 760px;
+            font-size: 16px;
         }
 
-        .btn {
-            display: inline-block;
-            background-color: var(--accent);
-            color: var(--white);
-            padding: 0.8rem 2rem;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        /* 2-Column Desktop Infrastructure Grid */
+        .layout-grid {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 60px;
+            padding: 40px 0 100px;
         }
 
-        .btn:hover {
-            background-color: var(--primary);
-            transform: translateY(-3px);
-            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        /* Sidebar Blueprint Menu */
+        .sidebar {
+            position: sticky;
+            top: 120px;
+            height: calc(100vh - 160px);
+            overflow-y: auto;
+            padding-right: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
         }
 
-        section {
-            padding: 5rem 0;
+        .sidebar::-webkit-scrollbar {
+            width: 4px;
         }
-
-        .section-title {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-
-        .section-title h2 {
-            font-size: 2.5rem;
-            color: var(--primary);
-            margin-bottom: 1rem;
-            position: relative;
-            display: inline-block;
-        }
-
-        .section-title h2::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 4px;
-            background-color: var(--accent);
+        .sidebar::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.05);
             border-radius: 2px;
         }
 
-        .section-title p {
-            color: var(--text);
-            max-width: 700px;
-            margin: 0 auto;
+        .sidebar-group-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-muted);
+            font-weight: 700;
+            margin-bottom: 14px;
         }
 
-        .about-content {
+        .sidebar-menu {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 12px;
+            color: var(--text-content);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            border-left: 2px solid transparent;
+        }
+
+        .sidebar-link:hover {
+            color: var(--text-main);
+            background-color: rgba(255, 255, 255, 0.03);
+        }
+
+        .sidebar-link.active {
+            border-left: 2px solid var(--primary);
+            border-radius: 0 8px 8px 0;
+            background-color: var(--primary-dim);
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .method-tag {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            font-weight: 700;
+            padding: 1px 6px;
+            border-radius: 4px;
+        }
+        .method-tag.get { background: var(--primary-dim); color: var(--primary); }
+        .method-tag.post { background: var(--accent-dim); color: var(--accent); }
+        .method-tag.put { background: var(--warning-dim); color: var(--warning); }
+        .method-tag.delete { background: var(--danger-dim); color: var(--danger); }
+
+        /* Workspace Document Sections layout */
+        .doc-content {
+            display: flex;
+            flex-direction: column;
+            gap: 80px;
+        }
+
+        .doc-section {
+            scroll-margin-top: 120px;
+        }
+
+        .doc-section h2 {
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .doc-section h2 i {
+            font-size: 20px;
+            color: var(--text-muted);
+        }
+
+        .doc-section p {
+            color: var(--text-content);
+            font-size: 15px;
+            margin-bottom: 24px;
+            max-width: 900px;
+        }
+
+        /* Highlight Core Info Box */
+        .info-note {
+            background-color: rgba(255,255,255,0.02);
+            border-left: 3px solid var(--text-muted);
+            padding: 16px 20px;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 28px;
+            font-size: 14px;
+            color: var(--text-content);
+        }
+        .info-note.accent-type {
+            border-left-color: var(--primary);
+            background-color: var(--primary-dim);
+        }
+
+        /* 50/50 Panel System Split */
+        .api-panel {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 3rem;
+            gap: 32px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px -15px rgba(0,0,0,0.5);
+        }
+
+        .panel-text {
+            padding: 32px;
+            border-right: 1px solid var(--border);
+        }
+
+        .panel-code {
+            padding: 32px;
+            background-color: var(--bg-code);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .endpoint-bar {
+            display: flex;
             align-items: center;
+            gap: 12px;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 12px 16px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            font-family: var(--font-mono);
+            font-size: 13px;
+            margin-bottom: 24px;
         }
 
-        .about-img {
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        .about-img img {
+        /* Standard Structured Tables styling */
+        .parameter-table {
             width: 100%;
-            height: auto;
+            border-collapse: collapse;
+            font-size: 13.5px;
+            margin-top: 16px;
+        }
+
+        .parameter-table th {
+            text-align: left;
+            color: var(--text-main);
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+            font-weight: 600;
+        }
+
+        .parameter-table td {
+            padding: 14px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            vertical-align: top;
+        }
+
+        .param-name {
+            font-family: var(--font-mono);
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .param-type {
+            font-family: var(--font-mono);
+            color: var(--text-muted);
+            font-size: 12px;
             display: block;
-            transition: transform 0.5s ease;
         }
 
-        .about-img:hover img {
-            transform: scale(1.05);
+        .param-req {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
         }
 
-        .about-text h3 {
-            font-size: 1.8rem;
-            margin-bottom: 1.5rem;
-            color: var(--dark);
-        }
-
-        .about-text p {
-            margin-bottom: 1.5rem;
-        }
-
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-
-        .stat-item {
-            text-align: center;
-            padding: 2rem 1rem;
-            background-color: var(--white);
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s ease;
-        }
-
-        .stat-item:hover {
-            transform: translateY(-10px);
-        }
-
-        .stat-item i {
-            font-size: 2.5rem;
-            color: var(--primary);
-            margin-bottom: 1rem;
-        }
-
-        .stat-item h3 {
-            font-size: 2.5rem;
-            color: var(--dark);
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-item p {
-            color: var(--text);
-        }
-
-        .initiatives {
-            background-color: var(--white);
-        }
-
-        .initiatives-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-        }
-
-        .initiative-card {
-            background-color: var(--light);
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s ease;
-        }
-
-        .initiative-card:hover {
-            transform: translateY(-10px);
-        }
-
-        .initiative-img {
-            height: 200px;
-            overflow: hidden;
-        }
-
-        .initiative-img img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-
-        .initiative-card:hover .initiative-img img {
-            transform: scale(1.1);
-        }
-
-        .initiative-content {
-            padding: 1.5rem;
-        }
-
-        .initiative-content h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: var(--dark);
-        }
-
-        .initiative-content p {
-            margin-bottom: 1.5rem;
-        }
-
-        .cta {
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            color: var(--white);
-            text-align: center;
-            padding: 5rem 0;
-        }
-
-        .cta h2 {
-            font-size: 2.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .cta p {
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .cta .btn {
-            background-color: var(--white);
-            color: var(--primary);
-        }
-
-        .cta .btn:hover {
-            background-color: var(--accent);
-            color: var(--white);
-        }
-
-        footer {
-            background-color: var(--dark);
-            color: var(--white);
-            padding: 3rem 0 1rem;
-        }
-
-        .footer-content {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .footer-column h3 {
-            font-size: 1.3rem;
-            margin-bottom: 1.5rem;
-            position: relative;
+        /* Native Code Highlight blocks styling */
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: var(--text-muted);
+            font-family: var(--font-mono);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
             padding-bottom: 10px;
         }
 
-        .footer-column h3::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 40px;
-            height: 2px;
-            background-color: var(--accent);
+        pre {
+            font-family: var(--font-mono);
+            font-size: 12.5px;
+            color: #bae6fd;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
         }
 
-        .footer-column p {
-            margin-bottom: 1rem;
+        .keyword { color: #f43f5e; }
+        .string { color: #34d399; }
+        .number { color: #fb923c; }
+        .comment { color: #475569; }
+        .boolean { color: #a855f7; }
+
+        /* Generic Layout Grid for Non-API Blocks */
+        .generic-table-wrapper {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px 24px;
+            margin-top: 16px;
         }
 
-        .footer-links {
-            list-style: none;
-        }
-
-        .footer-links li {
-            margin-bottom: 0.8rem;
-        }
-
-        .footer-links li a {
-            color: var(--light);
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-
-        .footer-links li a:hover {
-            color: var(--accent);
-            padding-left: 5px;
-        }
-
-        .social-links {
+        /* One-click Return to Top Infrastructure Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            background-color: var(--bg-surface);
+            color: var(--primary);
+            border: 1px solid var(--border);
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
             display: flex;
-            gap: 1rem;
-        }
-
-        .social-links a {
-            display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 40px;
-            height: 40px;
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            color: var(--white);
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-
-        .social-links a:hover {
-            background-color: var(--accent);
-            transform: translateY(-5px);
-        }
-
-        .copyright {
-            text-align: center;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .mobile-menu {
-            display: none;
-            font-size: 1.5rem;
             cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 99;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.6);
         }
 
-        @media (max-width: 992px) {
-            .about-content {
-                grid-template-columns: 1fr;
-            }
-            
-            .initiatives-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .footer-content {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .stats {
-                grid-template-columns: repeat(2, 1fr);
-            }
+        .back-to-top:hover {
+            background-color: var(--primary);
+            color: var(--bg-base);
+            border-color: var(--primary);
+            transform: translateY(-4px);
         }
 
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-            
-            .hero p {
-                font-size: 1.1rem;
-            }
-            
-            nav ul {
-                display: none;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                width: 100%;
-                background-color: var(--primary);
-                flex-direction: column;
-                padding: 1rem 0;
-                text-align: center;
-                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-            }
-            
-            nav ul.active {
-                display: flex;
-            }
-            
-            nav ul li {
-                margin: 0;
-                padding: 0.8rem 0;
-            }
-            
-            .mobile-menu {
-                display: block;
-            }
-            
-            .initiatives-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .footer-content {
-                grid-template-columns: 1fr;
-            }
-            
-            .stats {
-                grid-template-columns: 1fr;
-            }
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
         }
 
-        /* Animation for stats counter */
-        .counter {
-            transition: all 0.5s ease;
+        footer {
+            background: #04060d;
+            border-top: 1px solid var(--border);
+            padding: 50px 0;
+            text-align: center;
+            font-size: 13px;
+            color: var(--text-muted);
+            font-family: var(--font-mono);
+        }
+
+        @media (max-width: 1200px) {
+            .layout-grid { grid-template-columns: 1fr; gap: 40px; }
+            .sidebar { display: none; }
+            .api-panel { grid-template-columns: 1fr; }
+            .panel-text { border-right: none; border-bottom: 1px solid var(--border); }
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
+
+    <!-- Upper Main Topbar Navigation Bar -->
     <header>
-        <div class="container nav-container">
-            <div class="logo">
-                <i class="fas fa-seedling"></i>
-                <span>Green Network</span>
-            </div>
+        <div class="container">
             <nav>
-                <div class="mobile-menu">
-                    <i class="fas fa-bars"></i>
+                <a href="#" class="brand">
+                    <i class="fas fa-terminal"></i> DevRegistry Enterprise
+                </a>
+                <div class="header-meta">
+                    <span style="font-size: 13px; color: var(--text-muted); font-family: var(--font-mono);">REST Engine Target</span>
+                    <div class="badge">v1.4.0-build</div>
                 </div>
-                <ul>
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#initiatives">Initiatives</a></li>
-                    <li><a href="#get-involved">Get Involved</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
             </nav>
         </div>
     </header>
 
-    <!-- Hero Section -->
-    <section class="hero" id="home">
-        <div class="container hero-content">
-            <h1>Protect Our Planet, Preserve Our Future</h1>
-            <p>Join the global movement to create a sustainable world through conservation, education, and community action.</p>
-            <a href="#get-involved" class="btn">Join Our Network</a>
+    <!-- Header Summary Block -->
+    <section class="hero">
+        <div class="container">
+            <h1>Platform REST API Documentation | प्लेटफॉर्म REST API दस्तावेज़ीकरण</h1>
+            <p>Core Structure Developer Guide. Control isolated container image nodes, handle remote microservice accounts, and securely deliver automated cloud cluster signals via a clearly tokenized payload interface.<br>
+            कोर आर्किटेक्चर डेवलपर गाइड में आपका स्वागत है। पृथक कंटेनर इमेज नोड्स प्रबंधित करें, रिमोट माइक्रोसर्विस अकाउंट्स को हैंडल करें, और स्पष्ट रूप से टोकनाइज्ड पेलोड इंटरफ़ेस के माध्यम से स्वचालित क्लाउड क्लस्टर सिग्नलों को सुरक्षित रूप से डिलीवर करें।</p>
         </div>
     </section>
 
-    <!-- About Section -->
-    <section id="about">
-        <div class="container">
-            <div class="section-title">
-                <h2>About Green Network</h2>
-                <p>We are a global community dedicated to environmental protection and sustainable development.</p>
-            </div>
-            <div class="about-content">
-                <div class="about-img">
-                    <img src="https://images.unsplash.com/photo-1507591064344-4c6ce005b128?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Team planting trees">
-                </div>
-                <div class="about-text">
-                    <h3>Our Mission</h3>
-                    <p>Green Network is committed to creating a sustainable future by protecting natural ecosystems, promoting renewable energy, and empowering communities to take environmental action.</p>
-                    <p>Founded in 2010, we've grown from a small grassroots organization to an international network with over 50,000 members across 120 countries.</p>
-                    <p>Our approach combines scientific research, community engagement, and policy advocacy to address the most pressing environmental challenges of our time.</p>
-                    <a href="#" class="btn">Learn More</a>
-                </div>
-            </div>
-            <div class="stats">
-                <div class="stat-item">
-                    <i class="fas fa-tree"></i>
-                    <h3 class="counter" data-target="2500000">0</h3>
-                    <p>Trees Planted</p>
-                </div>
-                <div class="stat-item">
-                    <i class="fas fa-users"></i>
-                    <h3 class="counter" data-target="50000">0</h3>
-                    <p>Active Members</p>
-                </div>
-                <div class="stat-item">
-                    <i class="fas fa-globe-americas"></i>
-                    <h3 class="counter" data-target="120">0</h3>
-                    <p>Countries Reached</p>
-                </div>
-                <div class="stat-item">
-                    <i class="fas fa-recycle"></i>
-                    <h3 class="counter" data-target="1500">0</h3>
-                    <p>Cleanup Projects</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Initiatives Section -->
-    <section class="initiatives" id="initiatives">
-        <div class="container">
-            <div class="section-title">
-                <h2>Our Initiatives</h2>
-                <p>Discover the key programs and projects we're implementing to protect our planet.</p>
-            </div>
-            <div class="initiatives-grid">
-                <div class="initiative-card">
-                    <div class="initiative-img">
-                        <img src="https://dialogue.earth/content/uploads/2021/04/lessons-from-the-rush-to-reforest-china-dialogue-2400x1599.jpg" alt="Reforestation">
-                    </div>
-                    <div class="initiative-content">
-                        <h3>Global Reforestation</h3>
-                        <p>Planting millions of trees worldwide to restore ecosystems, combat climate change, and protect biodiversity.</p>
-                        <a href="#" class="btn">Learn More</a>
-                    </div>
-                </div>
-                <div class="initiative-card">
-                    <div class="initiative-img">
-                        <img src="https://images.unsplash.com/photo-1621451537084-482c73073a0f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80" alt="Ocean Conservation">
-                    </div>
-                    <div class="initiative-content">
-                        <h3>Ocean Conservation</h3>
-                        <p>Protecting marine ecosystems, reducing plastic pollution, and promoting sustainable fishing practices.</p>
-                        <a href="#" class="btn">Learn More</a>
-                    </div>
-                </div>
-                <div class="initiative-card">
-                    <div class="initiative-img">
-                        <img src="https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2072&q=80" alt="Renewable Energy">
-                    </div>
-                    <div class="initiative-content">
-                        <h3>Renewable Energy</h3>
-                        <p>Promoting solar, wind, and other clean energy sources to reduce dependence on fossil fuels.</p>
-                        <a href="#" class="btn">Learn More</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA Section -->
-    <section class="cta" id="get-involved">
-        <div class="container">
-            <h2>Join Our Global Movement</h2>
-            <p>Together, we can create a sustainable future for generations to come. Every action counts, no matter how small.</p>
-            <a href="#" class="btn">Become a Member</a>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer id="contact">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-column">
-                    <h3>Green Network</h3>
-                    <p>We are dedicated to protecting our planet through collaborative action, education, and sustainable solutions.</p>
-                    <div class="social-links">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                    </div>
-                </div>
-                <div class="footer-column">
-                    <h3>Quick Links</h3>
-                    <ul class="footer-links">
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="#about">About Us</a></li>
-                        <li><a href="#initiatives">Initiatives</a></li>
-                        <li><a href="#get-involved">Get Involved</a></li>
-                        <li><a href="#contact">Contact</a></li>
+    <!-- Main Structural Wrapper layout -->
+    <main class="container">
+        <div class="layout-grid">
+            
+            <!-- Left Navigation Tree Links -->
+            <aside class="sidebar">
+                <div>
+                    <div class="sidebar-group-title">Core Architecture / मुख्य आर्किटेक्चर</div>
+                    <ul class="sidebar-menu">
+                        <li><a href="#arch-overview" class="sidebar-link active">System Overview / सिस्टम सिंहावलोकन</a></li>
+                        <li><a href="#rate-limits" class="sidebar-link">Rate Limits / दर सीमा नियम</a></li>
                     </ul>
                 </div>
-                <div class="footer-column">
-                    <h3>Our Programs</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">Reforestation</a></li>
-                        <li><a href="#">Ocean Cleanup</a></li>
-                        <li><a href="#">Wildlife Protection</a></li>
-                        <li><a href="#">Climate Education</a></li>
-                        <li><a href="#">Sustainable Agriculture</a></li>
+                <div>
+                    <div class="sidebar-group-title">Authentication / प्रमाणीकरण</div>
+                    <ul class="sidebar-menu">
+                        <li><a href="#auth-session" class="sidebar-link"><span>Token Init / टोकन प्रारंभ</span> <span class="method-tag post">POST</span></a></li>
                     </ul>
                 </div>
-                <div class="footer-column">
-                    <h3>Contact Us</h3>
-                    <p><i class="fas fa-map-marker-alt"></i> Copper Creek Drive, New York</p>
-                    <p><i class="fas fa-phone"></i> +1 (312) 171-0771</p>
-                    <p><i class="fas fa-envelope"></i> support@greennetwork.org</p>
+                <div>
+                    <div class="sidebar-group-title">Registry Controller / रजिस्ट्री नियंत्रक</div>
+                    <ul class="sidebar-menu">
+                        <li><a href="#reg-list" class="sidebar-link"><span>Query Catalog / कैटलॉग क्वेरी</span> <span class="method-tag get">GET</span></a></li>
+                        <li><a href="#reg-delete" class="sidebar-link"><span>Delete Container / कंटेनर हटाएं</span> <span class="method-tag delete">DEL</span></a></li>
+                    </ul>
                 </div>
+                <div>
+                    <div class="sidebar-group-title">Webhook Engine / वेबहुक इंजन</div>
+                    <ul class="sidebar-menu">
+                        <li><a href="#webhook-register" class="sidebar-link"><span>Register Target / लक्ष्य पंजीकरण</span> <span class="method-tag post">POST</span></a></li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="sidebar-group-title">Error Codes / त्रुटि कोड</div>
+                    <ul class="sidebar-menu">
+                        <li><a href="#error-dictionary" class="sidebar-link">Global Schema / वैश्विक स्कीमा</a></li>
+                    </ul>
+                </div>
+            </aside>
+
+            <!-- Main Interactive Content Column -->
+            <div class="doc-content">
+                
+                <!-- Section Block: Architecture Overview -->
+                <section id="arch-overview" class="doc-section">
+                    <h2><i class="fas fa-network-wired"></i> System Architecture Overview / सिस्टम आर्किटेक्चर सिंहावलोकन</h2>
+                    <p>The DevRegistry REST interface is built around predictable, atomic endpoints. All data transactions are processed over secure HTTPS, using serialized JSON blocks for requests and standard structured data for server responses.<br>
+                    DevRegistry REST इंटरफ़ेस पूरी तरह से पूर्वानुमानित और एटॉमिक एंडपॉइंट्स पर आधारित है। सभी डेटा लेनदेन सुरक्षित HTTPS प्रोटोकॉल के माध्यम से संसाधित किए जाते हैं, जिसमें अनुरोधों (Requests) के लिए सीरियलाइज्ड JSON ब्लॉक्स और सर्वर प्रतिक्रियाओं (Responses) के लिए मानक संरचित डेटा का उपयोग किया जाता है।</p>
+                    <div class="info-note accent-type">
+                        <strong>Production Base URI Path / प्रोडक्शन बेस URI पाथ:</strong> <code>https://api.devregistry.local/v1</code>
+                    </div>
+                    <p>All administrative processes require structured transport headers. Content definitions must strictly match the following system mapping rules:<br>
+                    सभी प्रशासनिक प्रक्रियाओं के लिए संरचित ट्रांसपोर्ट हेडर की आवश्यकता होती है। सामग्री परिभाषाएं निम्नलिखित सिस्टम मैपिंग नियमों से कड़ाई से मेल खानी चाहिए:</p>
+                    <div class="generic-table-wrapper">
+                        <table class="parameter-table" style="margin-top:0;">
+                            <thead>
+                                <tr>
+                                    <th>Header Key / हेडर कुंजी</th>
+                                    <th>Expected Standard Content Mapping / अपेक्षित मानक सामग्री मैपिंग</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>Accept</code></td>
+                                    <td><code>application/json</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>Content-Type</code></td>
+                                    <td><code>application/json; charset=utf-8</code></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Section Block: Rate Throttling System -->
+                <section id="rate-limits" class="doc-section">
+                    <h2><i class="fas fa-shield-alt"></i> Rate Throttling (Rate Limits) / दर सीमा (रेट लिमिट)</h2>
+                    <p>To protect database pool allocation and ensure uniform cluster performance, API identities are restricted by a uniform rate window. Rate limiting metrics are evaluated and returned within explicit response header objects for each programmatic transaction sequence.<br>
+                    डेटाबेस पूल आवंटन की सुरक्षा और समान क्लस्टर प्रदर्शन प्रदान करने के लिए, API पहचान को एक समान दर विंडो द्वारा सीमित किया जाता है। प्रत्येक प्रोग्रामेटिक लेनदेन अनुक्रम के लिए स्पष्ट प्रतिक्रिया हेडर ऑब्जेक्ट के भीतर एक्सेस सीमाओं का मूल्यांकन और वापसी की जाती है।</p>
+                    <div class="generic-table-wrapper">
+                        <table class="parameter-table" style="margin-top:0;">
+                            <thead>
+                                <tr>
+                                    <th>Returned Header Token / लौटाया गया हेडर टोकन</th>
+                                    <th>Description / Data Definition Context &brvbar; विवरण / डेटा परिभाषा संदर्भ</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="param-name">X-RateLimit-Limit</span></td>
+                                    <td>The total number of allowed request events within a single window period (e.g., 5000 per hour).<br>एकल विंडो अवधि के भीतर अनुमत कुल अनुरोधों की संख्या (जैसे, 5000 प्रति घंटा)।</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="param-name">X-RateLimit-Remaining</span></td>
+                                    <td>The remaining request allowance metrics valid within the current system monitoring window.<br>वर्तमान सिस्टम मॉनिटरिंग अवधि के भीतर वैध शेष अनुरोध सीमा मीट्रिक।</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="param-name">X-RateLimit-Reset</span></td>
+                                    <td>An explicit Unix epoch timestamp string indicating the exact time when the current restriction block will be lifted.<br>एक स्पष्ट यूनिक्सEpoch टाइमस्टैम्प स्ट्रिंग जो वह सटीक समय बताती है जब वर्तमान प्रतिबंध ब्लॉक हटा दिया जाएगा।</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Section Block: Initialize Handshake -->
+                <section id="auth-session" class="doc-section">
+                    <h2><i class="fas fa-key"></i> Initial Handshake Authentication / प्रारंभिक हैंडशेक प्रमाणीकरण</h2>
+                    <p>Issue short-lived bearer keys using cryptographically signed, long-term service account credentials. Use the returned context token to securely perform structural modifications on container assets.<br>
+                    क्रिप्टोग्राफिक रूप से हस्ताक्षरित दीर्घकालिक सेवा खाता मानों का उपयोग करके अल्पकालिक बियरर कुंजियाँ (Bearer Keys) जारी करें। कंटेनर संपत्तियों पर सुरक्षित रूप से संरचनात्मक परिवर्तन करने के लिए लौटाए गए संदर्भ टोकन का उपयोग करें।</p>
+                    
+                    <div class="api-panel">
+                        <div class="panel-text">
+                            <div class="endpoint-bar">
+                                <span class="method-tag post">POST</span> /auth/tokens
+                            </div>
+                            <h4>Payload Schema Parameters / पेलोड स्कीमा पैरामीटर</h4>
+                            <table class="parameter-table">
+                                <thead>
+                                    <tr>
+                                        <th>Target Key / लक्ष्य कुंजी</th>
+                                        <th>Data Type / डेटा प्रकार</th>
+                                        <th>Requirement / अनिवार्यता</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><span class="param-name">client_id</span><span class="param-type">string</span></td>
+                                        <td>An explicit and unique service account identifier key.<br>एक स्पष्ट और विशिष्ट सेवा खाता पहचानकर्ता कुंजी।</td>
+                                        <td><span class="param-req" style="color:var(--danger)">Required / अनिवार्य</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="param-name">secret_key</span><span class="param-type">string</span></td>
+                                        <td>An encrypted secret token block paired directly with the active client ID.<br>एक एन्क्रिप्टेड सीक्रेट टोकन ब्लॉक जो सीधे सक्रिय क्लाइंट आईडी के साथ जोड़ा जाता है।</td>
+                                        <td><span class="param-req" style="color:var(--danger)">Required / अनिवार्य</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="panel-code">
+                            <div class="code-header">
+                                <span>Request JSON Block / अनुरोध JSON ब्लॉक</span>
+                            </div>
+<pre>{
+  <span class="keyword">"client_id"</span>: <span class="string">"srv_acc_01j15"</span>,
+  <span class="keyword">"secret_key"</span>: <span class="string">"dGhpcy1pcy1hLXNlY3VyZS1rZXk="</span>
+}</pre>
+                            <div class="code-header">
+                                <span>Response Shape / प्रतिक्रिया स्वरूप (201 Created)</span>
+                            </div>
+<pre>{
+  <span class="keyword">"status"</span>: <span class="string">"authenticated"</span>,
+  <span class="keyword">"token"</span>: <span class="string">"eyJhbGciOiJIUzI1NiIsInR5c"</span>,
+  <span class="keyword">"expires_in"</span>: <span class="number">3600</span>
+}</pre>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section Block: Query Catalog -->
+                <section id="reg-list" class="doc-section">
+                    <h2><i class="fas fa-boxes"></i> Repository Catalog Query / रिपॉजिटरी कैटलॉग क्वेरी</h2>
+                    <p>Retrieve a complete array object highlighting targeted repository container records, detailed image file layer metrics, tag lists, and historical image generation checkpoints from internal clusters.<br>
+                    लक्षित रिपॉजिटरी कंटेनर रिकॉर्ड, विस्तृत इमेज फ़ाइल लेयर मेट्रिक्स, टैग सूचियों और आंतरिक क्लस्टर से ऐतिहासिक इमेज जनरेशन चेकपॉइंट को हाइलाइट करने वाली एक पूर्ण ऐरे (Array) ऑब्जेक्ट प्राप्त करें।</p>
+                    
+                    <div class="api-panel">
+                        <div class="panel-text">
+                            <div class="endpoint-bar">
+                                <span class="method-tag get">GET</span> /packages/tags
+                            </div>
+                            <h4>Target Query Modifiers / लक्ष्य क्वेरी संशोधक</h4>
+                            <table class="parameter-table">
+                                <thead>
+                                    <tr>
+                                        <th>Modifier Key / संशोधक कुंजी</th>
+                                        <th>Data Type / डेटा प्रकार</th>
+                                        <th>Requirement / अनिवार्यता</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><span class="param-name">namespace</span><span class="param-type">string</span></td>
+                                        <td>Target string key grouping associated isolated application builds.<br>संबंधित पृथक एप्लिकेशन बिल्ड को समूहीकृत करने वाली लक्षित स्ट्रिंग कुंजी।</td>
+                                        <td><span class="param-req" style="color:var(--danger)">Required / अनिवार्य</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="param-name">limit</span><span class="param-type">integer</span></td>
+                                        <td>Maximum pagination output record count. Upper range limit is 100.<br>अधिकतम पेजिंग आउटपुट रिकॉर्ड संख्या। ऊपरी सीमा 100 है।</td>
+                                        <td><span class="param-req" style="color:var(--text-muted)">Optional [Default: 20] / वैकल्पिक [प्रारंभिक मान: 20]</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="panel-code">
+                            <div class="code-header">
+                                <span>cURL Request Interface / cURL अनुरोध इंटरफ़ेस</span>
+                            </div>
+<pre>curl -X GET https://api.devregistry.local/v1/packages/tags?namespace=nodejs \
+  -H <span class="string">"Authorization: Bearer eyJhbGciOiJI..."</span></pre>
+                            <div class="code-header">
+                                <span>Response Payload / प्रतिक्रिया पेलोड (200 OK)</span>
+                            </div>
+<pre>{
+  <span class="keyword">"namespace"</span>: <span class="string">"nodejs"</span>,
+  <span class="keyword">"tags"</span>: [
+    <span class="string">"18-alpine"</span>,
+    <span class="string">"20-debian"</span>,
+    <span class="string">"latest"</span>
+  ],
+  <span class="keyword">"total_count"</span>: <span class="number">3</span>
+}</pre>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section Block: Purge Container -->
+                <section id="reg-delete" class="doc-section">
+                    <h2><i class="fas fa-trash-alt"></i> Container Artifact Purge / कंटेनर आर्टिफ़ैक्ट विलोपन</h2>
+                    <p>Immediately and securely purge targeted binary image nodes, build tags, or decommissioned layer footprints from the underlying block storage array.<br>
+                    अंतर्निहित ब्लॉक स्टोरेज एरे से लक्षित बाइनरी इमेज नोड्स, बिल्ड टैग, या अनुपयोगी लेयर फ़ुटप्रिंट को तुरंत और सुरक्षित रूप से पूरी तरह से हटा दें।</p>
+                    
+                    <div class="info-note">
+                        <strong>Operational Warning / परिचालन चेतावनी:</strong> Executed deletion processes are irreversible and cannot be recovered from cache files.<br>निष्पादित विलोपन प्रक्रियाएं अपरिवर्तनीय हैं और इन्हें कैश फ़ाइलों से पुनर्प्राप्त नहीं किया जा सकता है।
+                    </div>
+
+                    <div class="api-panel">
+                        <div class="panel-text">
+                            <div class="endpoint-bar">
+                                <span class="method-tag delete">DELETE</span> /packages/purge
+                            </div>
+                            <h4>Payload Selection Parameters / पेलोड चयन पैरामीटर</h4>
+                            <table class="parameter-table">
+                                <thead>
+                                    <tr>
+                                        <th>Key Path / कुंजी पथ</th>
+                                        <th>Data Type / डेटा प्रकार</th>
+                                        <th>Requirement / अनिवार्यता</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><span class="param-name">registry_path</span><span class="param-type">string</span></td>
+                                        <td>Precise absolute path reference specifying the target image.<br>लक्षित इमेज को निर्दिष्ट करने वाला सटीक पूर्ण पथ संदर्भ।</td>
+                                        <td><span class="param-req" style="color:var(--danger)">Required / अनिवार्य</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="param-name">target_tag</span><span class="param-type">string</span></td>
+                                        <td>Isolated tag string node targeted for removal.<br>हटाने के लिए लक्षित पृथक टैग स्ट्रिंग नोड।</td>
+                                        <td><span class="param-req" style="color:var(--danger)">Required / अनिवार्य</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="panel-code">
+                            <div class="code-header">
+                                <span>Request Body Schema / अनुरोध बॉडी स्कीमा</span>
+                            </div>
+<pre>{
+  <span class="keyword">"registry_path"</span>: <span class="string">"/withmez/nodejs"</span>,
+  <span class="keyword">"target_tag"</span>: <span class="string">"latest"</span>
+}</pre>
+                            <div class="code-header">
+                                <span>Response Payload / प्रतिक्रिया पेलोड (200 OK)</span>
+                            </div>
+<pre>{
+  <span class="keyword">"purged"</span>: <span class="boolean">true</span>,
+  <span class="keyword">"released_bytes"</span>: <span class="number">524288000</span>,
+  <span class="keyword">"timestamp"</span>: <span class="number">1783008966</span>
+}</pre>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section Block: Register Target Webhook -->
+                <section id="webhook-register" class="doc-section">
+                    <h2><i class="fas fa-bell"></i> Event Webhook Target Registration / इवेंट वेबहुक लक्ष्य पंजीकरण</h2>
+                    <p>Configure automated system triggers to stream real-time HTTP payload blocks to external third-party servers whenever package updates or deletion operations complete across the network registry.<br>
+                    नेटवर्क रजिस्ट्री में पैकेज अपडेट या विलोपन संचालन पूरा होने पर बाहरी तृतीय-पक्ष सर्वर पर रीयल-टाइम HTTP पेलोड ब्लॉक स्ट्रीम करने के लिए स्वचालित सिस्टम ट्रिगर्स कॉन्फ़िगर करें।</p>
+                    
+                    <div class="api-panel">
+                        <div class="panel-text">
+                            <div class="endpoint-bar">
+                                <span class="method-tag post">POST</span> /webhooks/endpoints
+                            </div>
+                            <h4>Configuration Rules / कॉन्फ़िगरेशन नियम</h4>
+                            <table class="parameter-table">
+                                <thead>
+                                    <tr>
+                                        <th>Key Name / कुंजी नाम</th>
+                                        <th>Data Type / डेटा प्रकार</th>
+                                        <th>Requirement / अनिवार्यता</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><span class="param-name">target_url</span><span class="param-type">string</span></td>
+                                        <td>Destination endpoint URL to receive the streamed webhook requests.<br>स्ट्रीम किए गए वेबहुक अनुरोधों को प्राप्त करने के लिए गंतव्य एंडपॉइंट URL।</td>
+                                        <td><span class="param-req" style="color:var(--danger)">Required / अनिवार्य</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="param-name">subscribed_events</span><span class="param-type">array [string]</span></td>
+                                        <td>Array of event criteria strings matching execution logs (e.g., <code>image.push</code>, <code>image.purge</code>).<br>निष्पादन लॉग से मेल खाने वाले इवेंट मानदंड स्ट्रिंग्स का ऐरे (जैसे, <code>image.push</code>, <code>image.purge</code>)।</td>
+                                        <td><span class="param-req" style="color:var(--danger)">Required / अनिवार्य</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="panel-code">
+                            <div class="code-header">
+                                <span>Webhook Configuration Payload / वेबहुक कॉन्फ़िगरेशन पेलोड</span>
+                            </div>
+<pre>{
+  <span class="keyword">"target_url"</span>: <span class="string">"https://notify.services.local/receiver"</span>,
+  <span class="keyword">"subscribed_events"</span>: [
+    <span class="string">"image.push"</span>,
+    <span class="string">"image.purge"</span>
+  ]
+}</pre>
+                            <div class="code-header">
+                                <span>Response Shape / प्रतिक्रिया स्वरूप (201 Created)</span>
+                            </div>
+<pre>{
+  <span class="keyword">"webhook_id"</span>: <span class="string">"whk_88201a"</span>,
+  <span class="keyword">"active"</span>: <span class="boolean">true</span>,
+  <span class="keyword">"created_at"</span>: <span class="number">1783009412</span>
+}</pre>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section Block: Global Error Schema -->
+                <section id="error-dictionary" class="doc-section">
+                    <h2><i class="fas fa-exclamation-circle"></i> Global Error Definition Dictionary / वैश्विक त्रुटि परिभाषा शब्दकोश</h2>
+                    <p>In case of query failures, the backend gateway rejects processing with a clear, descriptive HTTP payload format paired with specific system tracking flags.<br>
+                    क्वेरी विफलताओं के मामले में, बैकएंड गेटवे विशिष्ट सिस्टम ट्रैकिंग फ़्लैग के साथ जुड़े एक स्पष्ट, वर्णनात्मक HTTP पेलोड प्रारूप के साथ प्रसंस्करण को अस्वीकार कर देता है।</p>
+                    
+                    <div class="generic-table-wrapper">
+                        <table class="parameter-table" style="margin-top:0;">
+                            <thead>
+                                <tr>
+                                    <th>HTTP Status / HTTP स्थिति</th>
+                                    <th>Error Flag Definition / त्रुटि फ़्लैग परिभाषा</th>
+                                    <th>Resolution Context Mapping / समाधान संदर्भ मैपिंग</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>400 Bad Request</code></td>
+                                    <td><span class="param-name">INVALID_PAYLOAD_FORMAT</span></td>
+                                    <td>The request body cannot be evaluated as validated schema JSON. Check quote symmetry.<br>अनुरोध बॉडी का मूल्यांकन मान्य स्कीमा JSON के रूप में नहीं किया जा सकता है। उद्धरण चिह्नों (Quotes) की समरूपता की जाँच करें।</td>
+                                </tr>
+                                <tr>
+                                    <td><code>401 Unauthorized</code></td>
+                                    <td><span class="param-name">EXPIRED_BEARER_TOKEN</span></td>
+                                    <td>The provided context token has expired. Request an atomic session handshake loop.<br>प्रदान किए गए संदर्भ टोकन की अवधि समाप्त हो गई है। एक नए सेशन हैंडशेक लूप का अनुरोध करें।</td>
+                                </tr>
+                                <tr>
+                                    <td><code>403 Forbidden</code></td>
+                                    <td><span class="param-name">INSUFFICIENT_NODE_PRIVILEGES</span></td>
+                                    <td>The current active identity lacks absolute privilege metrics to execute asset deletion.<br>वर्तमान सक्रिय पहचान में संपत्ति विलोपन निष्पादित करने के लिए आवश्यक पूर्ण विशेषाधिकार मेट्रिक्स की कमी है।</td>
+                                </tr>
+                                <tr>
+                                    <td><code>429 Too Many Requests</code></td>
+                                    <td><span class="param-name">RATE_LIMIT_EXCEEDED</span></td>
+                                    <td>Identity transaction threshold limits reached. Await restriction block release reset.<br>पहचान लेनदेन सीमा समाप्त हो गई है। प्रतिबंध ब्लॉक हटने और रीसेट होने की प्रतीक्षा करें।</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
             </div>
-            <div class="copyright">
-                <p>&copy; 2025 Green Network. All rights reserved.</p>
-            </div>
+        </div>
+    </main>
+
+    <!-- One-click Return to Top Infrastructure Node -->
+    <button class="back-to-top" id="backToTopBtn" title="Back to Top / ऊपर वापस जाएं" aria-label="Back to Top / ऊपर वापस जाएं">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <footer>
+        <div class="container">
+            &copy; 2026 DevRegistry Enterprise. All operational log outputs are authenticated via the cluster gateway. / सभी परिचालन लॉग आउटपुट क्लस्टर गेटवे के माध्यम से प्रमाणित हैं।
         </div>
     </footer>
 
+    <!-- Interactive Infrastructure JavaScript Core -->
     <script>
-        // Mobile Menu Toggle
-        document.querySelector('.mobile-menu').addEventListener('click', function() {
-            document.querySelector('nav ul').classList.toggle('active');
-        });
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.doc-section');
+            const sidebarLinks = document.querySelectorAll('.sidebar-link');
+            const backToTopBtn = document.getElementById('backToTopBtn');
 
-        // Counter Animation
-        function animateCounters() {
-            const counters = document.querySelectorAll('.counter');
-            const speed = 200; // The lower the slower
-            
-            counters.forEach(counter => {
-                const target = +counter.getAttribute('data-target');
-                const count = +counter.innerText;
-                
-                const inc = target / speed;
-                
-                if(count < target) {
-                    counter.innerText = Math.ceil(count + inc);
-                    setTimeout(animateCounters, 1);
+            // 1. One-click Return to Top Visibility Core Loop
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 400) {
+                    backToTopBtn.classList.add('visible');
                 } else {
-                    counter.innerText = target;
+                    backToTopBtn.classList.remove('visible');
                 }
             });
-        }
 
-        // Initialize counters when page loads
-        window.addEventListener('load', animateCounters);
-
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                const targetId = this.getAttribute('href');
-                if(targetId === '#') return;
-                
-                const targetElement = document.querySelector(targetId);
-                if(targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 80,
-                        behavior: 'smooth'
-                    });
-                    
-                    document.querySelector('nav ul').classList.remove('active');
-                }
+            // Trigger smooth travel block back to window anchor point 0
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
             });
+
+            // 2. High-Performance Intersection Observer for Sidebar Menu Tracking
+            const observerOptions = {
+                root: null,
+                rootMargin: '-20% 0px -60% 0px', // Precise middle-of-screen target zone
+                threshold: 0
+            };
+
+            const observerCallback = (entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.getAttribute('id');
+                        
+                        // Drop existing active nodes
+                        sidebarLinks.forEach(link => link.classList.remove('active'));
+                        
+                        // Map targeted active item
+                        const activeLink = document.querySelector(`.sidebar-link[href="#${id}"]`);
+                        if (activeLink) {
+                            activeLink.classList.add('active');
+                        }
+                    }
+                });
+            };
+
+            const observer = new IntersectionObserver(observerCallback, observerOptions);
+            sections.forEach(section => observer.observe(section));
         });
     </script>
 </body>
-
 </html>
